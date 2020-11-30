@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialect name='GridDBTEST'
+         class='griddb_jdbc'
+         base='DefaultSQLDialect'
+         version='18.1'>
+  <function-map>
+    <date-function name='DATEPART' return-type='int'>
+      <formula>CAST(EXTRACT(%1 , CAST(%2 AS TIMESTAMP)) AS INTEGER)</formula>
+      <formula part='year'>CAST(EXTRACT(YEAR , CAST(%2 AS TIMESTAMP)) AS INTEGER)</formula>
+      <formula part='quarter'>(EXTRACT(MONTH , %2) - 1) / 3 + 1</formula>
+      <formula part='month'>CAST(EXTRACT(MONTH , CAST(%2 AS TIMESTAMP)) AS INTEGER)</formula>
+      <formula part='dayofyear'>CAST(EXTRACT(DAY_OF_YEAR , CAST(%2 AS TIMESTAMP)) AS INTEGER)</formula>
+      <formula part='day'>CAST(EXTRACT(DAY , CAST(%2 AS TIMESTAMP)) AS INTEGER)</formula>
+      <formula part='weekday'>CAST(STRFTIME(&apos;%w&apos;, %2) AS INTEGER) + 1 </formula>
+      <formula part='week'>CAST(STRFTIME(&apos;%W&apos;, %2) AS INTEGER)</formula>
+      <formula part='hour'>CAST(EXTRACT(HOUR , CAST(%2 AS TIMESTAMP)) AS INTEGER)</formula>
+      <formula part='minute'>CAST(EXTRACT(MINUTE , CAST(%2 AS TIMESTAMP)) AS INTEGER)</formula>
+      <formula part='second'>CAST(EXTRACT(SECOND , CAST(%2 AS TIMESTAMP)) AS INTEGER)</formula>
+      <argument type='localstr' />
+      <argument type='datetime' />
+    </date-function>
+  </function-map>
+  <sql-format>
+    <format-select>
+      <part name='Select' value='SELECT %1' />
+      <part name='From' value='FROM %1' />
+      <part name='Where' value='WHERE %1' />
+      <part name='Group' value='GROUP BY %1' />
+      <part name='Having' value='HAVING %1' />
+      <part name='OrderBy' value='ORDER BY %1' />
+      <part name='Top' value='LIMIT %1' />
+      <part name='TopSampleRecords' value='LIMIT %1' />
+    </format-select>
+  </sql-format>
+</dialect>
